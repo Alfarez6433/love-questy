@@ -522,6 +522,12 @@ Terima kasih sudah menjadi bagian dari ceritaku. Aku sayang kamu, Tryas. Hari in
 
 </main>
 
+<!-- Musik offline untuk halaman akhir -->
+<audio id="endingMusic" preload="auto" loop>
+    <source src="kita-lewati-berdua.mp3" type="audio/mpeg">
+</audio>
+
+
 <script>
 (() => {
   "use strict";
@@ -843,11 +849,15 @@ Terima kasih sudah menjadi bagian dari ceritaku. Aku sayang kamu, Tryas. Hari in
     playFinishSound();
   });
 
-  $("replayBtn").addEventListener("click", () => {
+ $("replayBtn").addEventListener("click", () => {
+    const music = $("endingMusic");
+    music.pause();
+    music.currentTime = 0;
+
     $("surprise").classList.add("hidden");
     $("surpriseBtn").textContent = "Buka kejutan rahasia 🎁";
     startGame();
-  });
+});
 
   // --------------------------------------------------
   // ENDING SINEMATIK
@@ -880,8 +890,16 @@ Terima kasih sudah menjadi bagian dari ceritaku. Aku sayang kamu, Tryas. Hari in
 
     showScreen("endingScreen");
     createCinematicHearts(32);
-    playFinishSound();
-  }
+
+    // Putar lagu saat halaman akhir muncul
+    const music = $("endingMusic");
+    music.volume = 0.8;
+    music.currentTime = 0;
+
+    music.play().catch(error => {
+        console.warn("Musik belum bisa diputar otomatis:", error);
+    });
+}
 
   // --------------------------------------------------
   // KONTROL SENTUH: HOLD UNTUK BERGERAK
